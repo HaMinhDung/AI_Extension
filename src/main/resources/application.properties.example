@@ -1,0 +1,24 @@
+# Application Configuration
+spring.application.name=${APP_NAME:AITranslatorExtension}
+
+# Server Configuration
+server.port=${SERVER_PORT:8080}
+
+# Gemini API Configuration
+# Get your API key from: https://makersuite.google.com/app/apikey
+# Set GEMINI_API_KEY environment variable or replace with your key
+gemini.api.key=${GEMINI_API_KEY:YOUR_GEMINI_API_KEY_HERE}
+
+# Rate Limiting Configuration
+rate.limit.ip.requests=${RATE_LIMIT_IP_REQUESTS:100}
+rate.limit.ip.period=${RATE_LIMIT_IP_PERIOD:60}
+rate.limit.endpoint.translate.requests=${RATE_LIMIT_TRANSLATE_REQUESTS:20}
+rate.limit.endpoint.translate.period=${RATE_LIMIT_TRANSLATE_PERIOD:60}
+rate.limit.endpoint.health.requests=${RATE_LIMIT_HEALTH_REQUESTS:60}
+rate.limit.endpoint.health.period=${RATE_LIMIT_HEALTH_PERIOD:60}
+
+# Logging Configuration - AWS friendly (STDOUT only)
+logging.level.root=${LOG_LEVEL_ROOT:INFO}
+logging.level.com.extension.AITranslatorExtension=${LOG_LEVEL_APP:INFO}
+logging.level.org.springframework.web=${LOG_LEVEL_SPRING_WEB:INFO}
+logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
