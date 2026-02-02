@@ -1,59 +1,189 @@
-# AI Translator Extension - Backend
+# AI Translator Extension – Backend
 
-[![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.2-brightgreen.svg)](https://spring.io/projects/spring-boot)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+![Java](https://img.shields.io/badge/Java-17-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.2-brightgreen)
+![AWS](https://img.shields.io/badge/Deployed%20on-AWS-blue)
+![License](https://img.shields.io/badge/License-MIT-blue)
 
-Spring Boot REST API for AI-powered text translation using Google Gemini AI.
+Production-grade backend service powering an AI-enabled browser extension for real-time text translation.
 
-## 🔗 Links
+The service is designed with a strong emphasis on scalability, security, and real-world cloud deployment practices.
 
-- **Frontend**: [AI Extension UI](https://github.com/HaMinhDung/AI-Extension-UI)
-- **Developer**: [Ha Minh Dung](https://github.com/HaMinhDung)
+---
 
-## ✨ Features
+## 🔗 Related Links
 
-- AI-powered translation via Google Gemini
-- Rate limiting (100 req/min per IP)
-- CORS-enabled for browser extensions
-- Secure API key management
+- **Frontend Repository**: https://github.com/HaMinhDung/AI-Extension-UI
+- **Live Backend (Production)**: https://ai-extension-api.duckdns.org
+- **Author**: https://github.com/HaMinhDung
 
-## 🛠️ Tech Stack
+---
 
-Java 17 • Spring Boot 4.0.2 • Maven • Google Gemini AI • Bucket4j
+## 🧠 System Overview
 
-## 🚀 Quick Start
+This backend serves as a centralized AI inference layer for a browser-based translation extension.
 
-**Prerequisites**: Java 17+, Maven 3.6+, [Gemini API Key](https://makersuite.google.com/app/apikey)
+All AI requests are routed through the backend to prevent client-side API key exposure, enforce rate limiting, and enable centralized monitoring.
 
-```bash
-# Clone
-git clone https://github.com/HaMinhDung/AI_Extension.git
-cd AI_Extension
+The system follows a stateless REST architecture, allowing horizontal scaling and seamless cloud deployment.
 
-# Set API key (Windows)
-$env:GEMINI_API_KEY="your_api_key_here"
+---
 
-# Build & Run
-mvn spring-boot:run
+## 🧩 System Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        CLIENT LAYER                             │
+│  ┌────────────────────────────────────────────────────────┐     │
+│  │  Browser Extension (Frontend - React)                  │     │
+│  │  - User interaction                                    │     │
+│  │  - No API keys stored                                  │     │
+│  └────────────────────────────────────────────────────────┘     │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              │ HTTPS (443)
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                     INFRASTRUCTURE LAYER                        │
+│  ┌────────────────────────────────────────────────────────┐     │
+│  │  Nginx Reverse Proxy                                   │     │
+│  │  - TLS termination (Let's Encrypt)                     │     │
+│  │  - Request forwarding                                  │     │
+│  └────────────────────────────────────────────────────────┘     │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              │ HTTP (8080)
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      APPLICATION LAYER                          │
+│  ┌────────────────────────────────────────────────────────┐     │
+│  │  Spring Boot Backend (AWS EC2)                         │     │
+│  │  ┌──────────────────────────────────────────────────┐  │     │
+│  │  │  Rate Limiting Filter (100 req/min per IP)       │  │     │
+│  │  └──────────────────────────────────────────────────┘  │     │
+│  │  ┌──────────────────────────────────────────────────┐  │     │
+│  │  │  REST Controller (/api/generate)                 │  │     │
+│  │  └──────────────────────────────────────────────────┘  │     │
+│  │  ┌──────────────────────────────────────────────────┐  │     │
+│  │  │  Translation Service (Business Logic)            │  │     │
+│  │  └──────────────────────────────────────────────────┘  │     │
+│  │  ┌──────────────────────────────────────────────────┐  │     │
+│  │  │  Gemini Client (HTTP Client)                     │  │     │
+│  │  └──────────────────────────────────────────────────┘  │     │
+│  │                                                        │     │
+│  │  📌 Stateless → Horizontally Scalable                  │     │
+│  │  📌 API Key injected via Environment Variables         │     │
+│  └────────────────────────────────────────────────────────┘     │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              │ HTTPS API Call
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      EXTERNAL SERVICE                           │
+│  ┌────────────────────────────────────────────────────────┐     │
+│  │  Google Gemini API                                     │     │
+│  │  - AI model inference                                  │     │
+│  │  - Text generation & translation                       │     │
+│  └────────────────────────────────────────────────────────┘     │
+└─────────────────────────────────────────────────────────────────┘
+
+Key Design Principles:
+✓ API key only lives on server (never exposed to frontend)
+✓ Rate limiting enforced at application layer
+✓ Stateless architecture enables horizontal scaling
+✓ Trust boundary: All AI requests proxied through backend
+✓ HTTPS enforced end-to-end for secure communication
 ```
 
-3. **Run the application**
-```bash
-# Development
-./mvnw spring-boot:run
+---
 
-# Production
-./mvnw clean package
-java -jar target/AITranslatorExtension-0.0.1-SNAPSHOT.jar
+## ✨ Key Features
+
+- AI-powered text translation using Google Gemini
+- Stateless REST API design
+- Per-IP rate limiting (100 requests/min)
+- Centralized exception handling with consistent error responses
+- Secure environment-based API key management
+- CORS configuration optimized for browser extensions
+
+---
+
+## 🏗 Architecture & Tech Stack
+
+- **Language**: Java 17
+- **Framework**: Spring Boot 4.0.2
+- **Build Tool**: Maven
+- **AI Provider**: Google Gemini
+- **Rate Limiting**: Bucket4j
+- **Web Server**: Embedded Apache Tomcat
+- **Cloud Platform**: AWS EC2 (Linux)
+- **Process Manager**: systemd
+- **Reverse Proxy**: Nginx
+- **TLS / HTTPS**: Let’s Encrypt
+
+---
+
+## 🚀 Deployment & Operations
+
+The application is deployed on AWS EC2 and runs as a long-lived system service managed by `systemd`.
+
+Operational highlights:
+
+- Automatic service restarts on failure
+- Secure injection of secrets via OS-level environment variables
+- HTTPS termination at the reverse proxy layer
+- Centralized logging via `journalctl`
+
+This deployment setup mirrors real-world production environments.
+
+---
+
+## 🔐 Security Considerations
+
+- No secrets committed to source control
+- API keys stored exclusively as environment variables
+- HTTPS enforced for all external traffic
+- AI credentials never exposed to the frontend
+
+---
+
+## ⚡ Performance & Reliability
+
+- IP-based rate limiting (100 requests per minute)
+- Stateless request handling for horizontal scalability
+- Optimized request lifecycle for low-latency AI responses
+- Graceful error handling with consistent API contracts
+
+---
+
+## 🌍 Live Demo (Production)
+
+Base URL:
+```
+https://ai-extension-api.duckdns.org
 ```
 
+> Public endpoint for demonstration and testing purposes only.  
+> Requests are rate-limited.
 
-Server runs at `http://localhost:8080`
+### Example Request
 
-## 📡 API
+```bash
+curl -X POST https://ai-extension-api.duckdns.org/api/generate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "Hello, world!",
+    "prompt": "Translate to Vietnamese"
+  }'
+```
 
-**POST** `/api/generate`
+---
+
+## 📡 API Reference
+
+### POST `/api/generate`
+
+**Request**
 ```json
 {
   "text": "Hello, world!",
@@ -61,7 +191,7 @@ Server runs at `http://localhost:8080`
 }
 ```
 
-**Response:**
+**Response**
 ```json
 {
   "result": "¡Hola, mundo!",
@@ -69,32 +199,23 @@ Server runs at `http://localhost:8080`
 }
 ```
 
-## 📄 License
-
-MIT © [Ha Minh Dung](https://github.com/HaMinhDung)
-
-
-**Code Explanation:**
-```bash
-curl -X POST http://localhost:8080/api/generate \
-  -H "Content-Type: application/json" \
-  -d '{"text": "const x = () => {}", "prompt": "Explain this code"}'
-```
+---
 
 ## 📁 Project Structure
 
 ```
 src/main/java/com/extension/AITranslatorExtension/
 ├── client/          # Gemini API HTTP client
-├── config/          # CORS and filter configuration
+├── config/          # CORS and global configuration
 ├── controller/      # REST API endpoints
-├── dto/             # Request/Response models
-├── exception/       # Error handling
+├── dto/             # Request / response models
+├── exception/       # Centralized error handling
 ├── filter/          # Rate limiting filter
 └── service/         # Business logic
 ```
 
-## ⚙️ Configuration
+---
 
-Environment variables (see [AWS_ENV_VARIABLES.md](AWS_ENV_VARIABLES.md) for details):
-- `GEMINI_API_KEY` (required)
+## 📄 License
+
+MIT © Ha Minh Dung
