@@ -19,7 +19,7 @@ The service is designed with a strong emphasis on scalability, security, and rea
 
 ---
 
-## 🧠 System Overview
+##  System Overview
 
 This backend serves as a centralized AI inference layer for a browser-based translation extension.
 
@@ -29,7 +29,7 @@ The system follows a stateless REST architecture, allowing horizontal scaling an
 
 ---
 
-## 🧩 System Architecture
+##  System Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -71,8 +71,8 @@ The system follows a stateless REST architecture, allowing horizontal scaling an
 │  │  │  Gemini Client (HTTP Client)                     │  │     │
 │  │  └──────────────────────────────────────────────────┘  │     │
 │  │                                                        │     │
-│  │  📌 Stateless → Horizontally Scalable                  │     │
-│  │  📌 API Key injected via Environment Variables         │     │
+│  │   Stateless → Horizontally Scalable                  │     │
+│  │   API Key injected via Environment Variables         │     │
 │  └────────────────────────────────────────────────────────┘     │
 └─────────────────────────────────────────────────────────────────┘
                               │
@@ -97,7 +97,7 @@ Key Design Principles:
 
 ---
 
-## ✨ Key Features
+##  Key Features
 
 - AI-powered text translation using Google Gemini
 - Stateless REST API design
@@ -123,7 +123,7 @@ Key Design Principles:
 
 ---
 
-## 🚀 Deployment & Operations
+##  Deployment & Operations
 
 The application is deployed on AWS EC2 and runs as a long-lived system service managed by `systemd`.
 
@@ -138,7 +138,7 @@ This deployment setup mirrors real-world production environments.
 
 ---
 
-## 🔐 Security Considerations
+##  Security Considerations
 
 - No secrets committed to source control
 - API keys stored exclusively as environment variables
@@ -147,7 +147,7 @@ This deployment setup mirrors real-world production environments.
 
 ---
 
-## ⚡ Performance & Reliability
+##  Performance & Reliability
 
 - IP-based rate limiting (100 requests per minute)
 - Stateless request handling for horizontal scalability
@@ -156,7 +156,7 @@ This deployment setup mirrors real-world production environments.
 
 ---
 
-## 🌍 Live Demo (Production)
+##  Live Demo (Production)
 
 Base URL:
 ```
@@ -201,7 +201,7 @@ curl -X POST https://ai-extension-api.duckdns.org/api/generate \
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 src/main/java/com/extension/AITranslatorExtension/
@@ -216,6 +216,6 @@ src/main/java/com/extension/AITranslatorExtension/
 
 ---
 
-## 📄 License
+##  License
 
 MIT © Ha Minh Dung
