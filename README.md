@@ -11,7 +11,7 @@ The service is designed with a strong emphasis on scalability, security, and rea
 
 ---
 
-## 🔗 Related Links
+##  Related Links
 
 - **Frontend Repository**: https://github.com/HaMinhDung/AI-Extension-UI
 - **Live Backend (Production)**: https://ai-extension-api.duckdns.org
@@ -108,7 +108,7 @@ Key Design Principles:
 
 ---
 
-## 🏗 Architecture & Tech Stack
+##  Architecture & Tech Stack
 
 - **Language**: Java 17
 - **Framework**: Spring Boot 4.0.2
@@ -179,7 +179,7 @@ curl -X POST https://ai-extension-api.duckdns.org/api/generate \
 
 ---
 
-## 📡 API Reference
+##  API Reference
 
 ### POST `/api/generate`
 
